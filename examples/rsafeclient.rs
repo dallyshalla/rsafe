@@ -8,11 +8,12 @@ fn main() {
 	//--------------------------------------------------------------------------------
 	//         First we register with Safe Launcher
 	//--------------------------------------------------------------------------------
-			 
+			
+	// change this with your own aaplication details		 
 	let appdetails = auth::AppDetails {
-		name: "rustsafe".to_string(),
+		name: "appname".to_string(),
 		version: "0.0.1".to_string(),
-		vendor: "wrnice".to_string(),
+		vendor: "vendorname".to_string(),
 		id: "myID".to_string(),
 		permissions: vec! []
 	};	
@@ -22,7 +23,7 @@ fn main() {
 	
 	//handle errors
 	match safe_register_resp {
-		Err(e) => {
+		Err(e) => { // something went wrong : launcher is not running , user didn't allow application in launcher ...
 	        println!("{:?}\nUnable to Connect to Launcher \nMake sure Safe Launcher is running", e); 
 	    },
 	    Ok(credentials) => {
@@ -44,7 +45,7 @@ fn main() {
 			// --------------------------------------------------------------------------------
 	
 				// use this to debug
-				let createdir = false;		
+				let createdir = true;		
 				if createdir 
 			{
 		
@@ -58,7 +59,7 @@ fn main() {
 		
 			// populate the struct as per API doc:
 			let create_dir_data = nfs::CreateDirData {
-			dirPath: "/dirtest".to_string(),
+			dirPath: "/testdir".to_string(),
 			isPrivate: true,
 			metadata: meta_b64,
 			isVersioned: false,
@@ -89,26 +90,7 @@ fn main() {
 			
 			}
 			
-			// --------------------------------------------------------------------------------
-			//                         Read a Directory - NFS operation
-			// --------------------------------------------------------------------------------
-				
-				// use this to debug
-				let readdir = true;		
-				if readdir 
-			{
-				
-			// populate the struct as per API doc:
-			let read_dir_data = nfs::ReadDirData {
-			dirPath: "/destination".to_string(),
-			isPathShared: false
-			};
-			
-			let nfs_read_dir = nfs::read_dir ( read_dir_data, &credentials );
-			println!(" ls resp = {:?}", nfs_read_dir );
-			
-			}
-	
+			/*   
 			// --------------------------------------------------------------------------------
 			//                         Move a Directory - NFS operation
 			// --------------------------------------------------------------------------------
@@ -120,24 +102,25 @@ fn main() {
 				
 			// populate the struct as per API doc: 
 			let move_dir_data = nfs::MoveDirData {
-			srcPath: "/dirtest".to_string(),
-			destPath: "/destination".to_string(),
+			srcPath: "/testdir".to_string(),
+			destPath: "/destinationdir".to_string(),
 			retainSource: false,
 			isSrcPathShared: false,
 			isDestPathShared: false
 			};
 			
+			//for now, this returns 400, inconditionnally 
 			let nfs_move_dir = nfs::move_dir ( move_dir_data, &credentials );
 			println!(" ls resp = {:?}", nfs_move_dir );
 			
 			}
-					
+			*/
+			
+								
 			// --------------------------------------------------------------------------------
 			//                         Delete a Directory - NFS operation
 			// --------------------------------------------------------------------------------
 				
-		
-			
 				// use this to debug
 				let deletedir = false;		
 				if deletedir 
@@ -145,7 +128,7 @@ fn main() {
 				
 			// populate the struct as per API doc:
 			let delete_dir_data = nfs::ReadDirData {
-			dirPath: "/destination/dirtest".to_string(),
+			dirPath: "/testdir".to_string(),
 			isPathShared: false
 			};
 			
@@ -161,7 +144,7 @@ fn main() {
 			// --------------------------------------------------------------------------------
 			
 				// use this to debug
-				let createfile = false;		
+				let createfile = true;		
 				if createfile
 			{
 			
@@ -174,7 +157,7 @@ fn main() {
 		
 			// populate the struct as per API doc:
 			let create_file_data = nfs::CreateFileData {
-			filePath: "/dirtest/testfile.txt".to_string(),
+			filePath: "/testfile.txt".to_string(),
 			isPrivate: true,
 			metadata: meta_b64,
 			isVersioned: false,
@@ -191,14 +174,14 @@ fn main() {
 			// --------------------------------------------------------------------------------
 				
 				// use this to debug
-				let movefile = false;		
+				let movefile = true;		
 				if movefile 
 			{
 				
 			// populate the struct as per API doc:
 			let move_file_data = nfs::MoveFileData {
-			srcPath: "/dirtest/testfile.txt".to_string(),
-			destPath: "/destination".to_string(),
+			srcPath: "/testfile.txt".to_string(),
+			destPath: "/testdir".to_string(),
 			retainSource: false,
 			isSrcPathShared: false,
 			isDestPathShared: false
@@ -215,13 +198,13 @@ fn main() {
 			// --------------------------------------------------------------------------------	
 			
 				// use this to debug
-				let writefile = false;		
+				let writefile = true;		
 				if writefile
 			{
 			
 			// populate the struct as per API doc:
 			let write_file_data = nfs::WriteFileData {
-			filePath: "/dirtest/testfile.txt".to_string(),
+			filePath: "/testdir/testfile.txt".to_string(),
 			isPathShared: false,
 			fileContent : "This is just a sample text!!!".to_string(),
 			offset : 0  // seems to be unsupported
@@ -237,7 +220,7 @@ fn main() {
 			// --------------------------------------------------------------------------------
 				
 				// use this to debug
-				let readfile = false;		
+				let readfile = true;		
 				if readfile
 			{
 				
@@ -245,9 +228,9 @@ fn main() {
 				
 			// populate the struct as per API doc:
 			let read_file_data = nfs::ReadFileData {
-			filePath: "/dirtest/testfile.txt".to_string(),
+			filePath: "/testdir/testfile.txt".to_string(),
 			isPathShared: false,
-			offset: 2,  //  seems to be unsupported
+			offset: 0,  //  seems to be unsupported
 			length: 0,  //  seems to be unsupported , use length: 0 to read the entire file
 			};
 			
@@ -263,13 +246,13 @@ fn main() {
 		
 			
 				// use this to debug
-				let deletefile = false;		
+				let deletefile = true;		
 				if deletefile 
 			{
 				
 			// populate the struct as per API doc:
 			let delete_file_data = nfs::DeleteFileData {
-			filePath: "/dirtest/testfile.txt".to_string(),
+			filePath: "/testdir/testfile.txt".to_string(),
 			isPathShared: false
 			};
 			
@@ -285,7 +268,7 @@ fn main() {
 			
 			println! ("Hellooo!");
 				
-			// hit a key to quit
+			// hit enter to quit
 			let mut enter = String::new();
 			println! ("Press enter to quit");
 			io::stdin().read_line(&mut enter)
